@@ -1,33 +1,11 @@
-// import React from 'react';
-// import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import '@fortawesome/fontawesome-free/css/all.min.css';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faCloudUploadAlt, faCog, faChartLine } from '@fortawesome/free-solid-svg-icons';
-// import { useEffect, useState } from "react";
-// import './App.css';
+// import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+// import {faChartLine, faCloudUploadAlt, faCog} from "@fortawesome/free-solid-svg-icons";
+// import React from "react";
+// import {useAuth} from "./context/authContext";
 //
 // function MainPage() {
-//     const [userData, setUserData] = useState(null);
-//     const location = useLocation();
-//     const searchParams = new URLSearchParams(location.search);
-//     const username = searchParams.get('username');
-//     const email = searchParams.get('email');
-//
-//     useEffect(() => {
-//         const storedUserData = JSON.parse(sessionStorage.getItem('userData'));
-//         const searchParams = new URLSearchParams(location.search);
-//         const usernameFromParams = searchParams.get('username');
-//         const emailFromParams = searchParams.get('email');
-//         if (storedUserData) {
-//             setUserData(storedUserData);
-//         } else if (usernameFromParams && emailFromParams) {
-//             setUserData({ username: usernameFromParams, email: emailFromParams });
-//         } else {
-//             // Handle case when user is not logged in (e.g., redirect to login)
-//             console.log('User not logged in');
-//         }
-//     }, [location]);
+//     const { userData } = useAuth();
+//     const {username, email} = userData || {};
 //
 //     return (
 //         <div className="App">
@@ -35,7 +13,7 @@
 //                 <div className="row justify-content-center align-items-center">
 //                     <div className="col-md-8 d-flex flex-column justify-content-center align-items-center">
 //                         <h1 className="display-4 mb-4 text-center text-primary">
-//                             Welcome to e-Core GCP, {email}
+//                             Welcome to e-Core GCP, {username} - {email}
 //                         </h1>
 //                         <p className="lead mb-4 text-center text-secondary">
 //                             Discover the power of GCP and how e-Core can help you unlock its full potential.
@@ -74,35 +52,26 @@
 //     );
 // }
 //
-// function App() {
-//     return (
-//         <Router>
-//             <Routes>
-//                 <Route path="/" element={<MainPage />} />
-//                 {/* Add other routes as necessary */}
-//             </Routes>
-//         </Router>
-//     );
-// }
-//
-// export default App;
-
-// App.js
+// export default MainPage;
+// MainPage.js
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import MainPage from './MainPage';
-import { AuthProvider } from './context/authContext';
-import ProtectedRoute from "./ProtectedRoute";
+import { useAuth } from './context/authContext';
 
-function App() {
+function MainPage() {
+    const { userData } = useAuth();
+
     return (
-        <Router>
-            <AuthProvider>
-                <Routes>
-                    <Route path="/" element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
-                </Routes>
-            </AuthProvider>
-        </Router>
+        <div>
+            {userData ? (
+                <div>
+                    <h1>Bem-vindo, {userData.username}</h1>
+                    {/* Outros conteúdos da página */}
+                </div>
+            ) : (
+                <h1>Carregando...</h1>
+            )}
+        </div>
     );
 }
-export default App;
+
+export default MainPage;
