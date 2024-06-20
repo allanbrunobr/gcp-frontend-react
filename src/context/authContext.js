@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
-const AuthContext = createContext();
+const AuthContext = createContext('mindpro');
 
 export function AuthProvider({ children }) {
     const [userData, setUserData] = useState(null);
