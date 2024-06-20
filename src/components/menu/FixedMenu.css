@@ -1,0 +1,31 @@
+/* FixedMenu.css */
+.fixed-menu {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.fixed-menu nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.fixed-menu nav ul li {
+    margin: 0 15px;
+}
+
+.fixed-menu nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.fixed-menu nav ul li a:hover {
+    text-decoration: underline;
+}
