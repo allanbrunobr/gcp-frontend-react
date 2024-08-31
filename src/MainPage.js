@@ -1,60 +1,63 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCloudUploadAlt, faCog, faChartLine } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import { useAuth } from './context/authContext';
+import {
+    AppBar, Toolbar, Typography, Grid, Container, Card, CardContent, CardMedia, Fade
+} from '@mui/material';
+
+const cases = [
+    { title: "Transfero: ganhos de performance e produtividade com o Google Cloud e o Google Workspace", date: "21 de maio de 2024" },
+    { title: "Capemisa Seguradora – Parceria completa com total conexão em todos os processos.", date: "7 de maio de 2024" },
+    { title: "Habib’s – Perfeita harmonia entre as equipes com ampla dedicação.", date: "7 de maio de 2024" },
+    { title: "UBUS Revoluciona o Transporte com o Google Cloud", date: "2 de maio de 2024" },
+    { title: "Omega Energia fornece soluções sustentáveis utilizando a nuvem.", date: "28 de abril de 2024" },
+    { title: "Concremat ocupa o primeiro lugar em inovação com a ajuda da nuvem.", date: "15 de abril de 2024" },
+];
 
 function MainPage() {
-    const { userData } = useAuth();
-
     return (
         <div>
-            {userData ? (
-                        <div className="App">
-                            <div className="container-fluid my-5">
-                                <div className="row justify-content-center align-items-center">
-                                    <div className="col-md-8 d-flex flex-column justify-content-center align-items-center">
-                                        <h1 className="display-4 mb-4 text-center text-primary">
-                                            Welcome to e-Core GCP, {userData.username} - {userData.email}
-                                        </h1>
-                                        <p className="lead mb-4 text-center text-secondary">
-                                            Discover the power of GCP and how e-Core can help you unlock its full potential.
-                                        </p>
-                                        <div className="d-flex">
-                                            <a href="#" className="btn btn-primary mr-3">Learn More</a>
-                                            <a href="#" className="btn btn-secondary">Get Started</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <AppBar position="static" color="transparent" elevation={0}>
+                <Toolbar>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                        Venha pra Nuvem
+                    </Typography>
+                </Toolbar>
+            </AppBar>
 
-                            <div className="container-fluid bg-light py-5">
-                                <div className="container">
-                                    <h2 className="text-center mb-4 text-secondary">Why Choose e-Core?</h2>
-                                    <div className="row">
-                                        <div className="col-md-4 text-center">
-                                            <FontAwesomeIcon icon={faCloudUploadAlt} size="3x" className="mb-3 text-primary" />
-                                            <h4>Seamless Cloud Migration</h4>
-                                            <p className="text-secondary">Our experts will guide you through a smooth transition to the GCP cloud.</p>
-                                        </div>
-                                        <div className="col-md-4 text-center">
-                                            <FontAwesomeIcon icon={faCog} size="3x" className="mb-3 text-primary" />
-                                            <h4>Optimized GCP Solutions</h4>
-                                            <p className="text-secondary">We'll help you leverage GCP services to drive your business forward.</p>
-                                        </div>
-                                        <div className="col-md-4 text-center">
-                                            <FontAwesomeIcon icon={faChartLine} size="3x" className="mb-3 text-primary" />
-                                            <h4>Continuous Optimization</h4>
-                                            <p className="text-secondary">Our team will continuously monitor and optimize your GCP infrastructure.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-            ) : (
-                <h1>Carregando...</h1>
-            )}
+            <Container sx={{ py: 5 }}>
+                <Grid container spacing={4}>
+                    {cases.map((caseItem, index) => (
+                        <Grid item key={index} xs={12} sm={6} md={4}>
+                            <Fade in={true} timeout={1000} style={{ transitionDelay: `${index * 200}ms` }}>
+                                <Card
+                                    sx={{
+                                        maxHeight: 350,
+                                        transition: 'transform 0.2s, box-shadow 0.2s',
+                                        '&:hover': {
+                                            transform: 'scale(1.05)',
+                                            boxShadow: '0 6px 20px rgba(0, 0, 0, 0.15)',
+                                        },
+                                    }}
+                                >
+                                    <CardMedia
+                                        component="img"
+                                        height="140"
+                                        image={`https://via.placeholder.com/150?text=Case+${index + 1}`}
+                                        alt={caseItem.title}
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="div">
+                                            {caseItem.title}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {caseItem.date}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Fade>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Container>
         </div>
     );
 }

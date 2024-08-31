@@ -1,14 +1,19 @@
-import { useAuth } from "./context/authContext";
-import {useNavigate} from "react-router-dom";
+// src/ProtectedRoute.js
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from './context/authContext';
 
 function ProtectedRoute({ children }) {
-    const { isLoggedIn } = useAuth();
-    const navigate = useNavigate();
+    const { user, loading } = useAuth();
 
-    if (!isLoggedIn) {
-        navigate("http://localhost:4201/login", { replace: true });
-        return null;
+    if (loading) {
+        return <div>Loading...</div>;
     }
+
+    if (!user) {
+        return <Navigate to="http://localhost:8081" replace />;
+    }
+
     return children;
 }
 

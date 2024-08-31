@@ -1,33 +1,40 @@
+// src/context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import { initializeAuth, signInWithToken, getCurrentUser } from '../services/authService';
 
-const AuthContext = createContext('mindpro');
+const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [userData, setUserData] = useState(null);
-    const location = useLocation();
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const token = searchParams.get('token');
-
-        if (token) {
-            try {
-                const decoded = jwtDecode(token);
-                setUserData({ username: decoded.username, email: decoded.email });
-            } catch (error) {
-                console.error('Invalid token', error);
+        const initialize = async () => {
+            await initializeAuth(setUser);
+            const token = localStorage.getItem('authToken');
+            if (token && !getCurrentUser()) {
+                try {
+                    await signInWithToken(token);
+                } catch (error) {
+                    console.error("Failed to sign in with token:", error);
+                    localStorage.removeItem('authToken');
+                }
             }
-        } else {
-        }
-    }, [location]);
+            setLoading(false);
+        };
 
-    const isLoggedIn = !!userData;
-    console.log("is logged in: " + isLoggedIn)
+        initialize();
+    }, []);
+
+    const value = {
+        user,
+        setUser,
+        isLoggedIn: !!user,
+        loading
+    };
 
     return (
-        <AuthContext.Provider value={{ userData, setUserData, isLoggedIn }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,23 +1,37 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from './MainPage';
-import { AuthProvider } from './context/authContext';
+import { AuthProvider, useAuth } from './context/authContext';
 import ProtectedRoute from "./ProtectedRoute";
-import FixedMenu from './components/menu/FixedMenu'; // Importando o FixedMenu
+import FixedMenu from './components/menu/FixedMenu';
+import routes from './routes';
 
+function AppContent() {
+    const { loading } = useAuth();
 
-function App() {
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <Router>
-            <AuthProvider>
-                <FixedMenu /> {/* Incluindo o FixedMenu */}
-                <div style={{ paddingTop: '60px' }}> {/* Ajustando o padding-top para acomodar o menu fixo */}
+            <FixedMenu />
+            <div style={{ paddingTop: '60px' }}>
                 <Routes>
-                    <Route path="/" element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+                    <Route path="/" element={<MainPage />} />
+                    {routes}
                 </Routes>
-                </div>
-            </AuthProvider>
+            </div>
         </Router>
     );
 }
+
+function App() {
+    return (
+        <AuthProvider>
+            <AppContent />
+        </AuthProvider>
+    );
+}
+
 export default App;
