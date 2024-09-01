@@ -95,7 +95,7 @@ const FixedMenu = () => {
                             onMouseLeave: handleMouseLeave,
                         }}
                     >
-                        <MenuItem onClick={() => handleMenuItemClick('/visionFaceDetection')}>What is your mood?</MenuItem>
+                        <MenuItem onClick={() => handleMenuItemClick('/faceExpressionDetection')}>What is your mood?</MenuItem>
                         <MenuItem onClick={() => handleMenuItemClick('/sentiment')}>Sentiment Analysis</MenuItem>
                         <MenuItem onClick={() => handleMenuItemClick('/translator')}>Translator</MenuItem>
                         <MenuItem divider />
