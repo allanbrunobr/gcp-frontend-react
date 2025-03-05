@@ -21,20 +21,11 @@ const SentimentAnalysis = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!text.trim()) {
-      setAlertMessage("Text cannot be empty.");
-      setOpenAlert(true);
-      return;
-    }
-
-    setLoading(true);
+  const analyzeSentiment = async (textToAnalyze) => {
     try {
       const response = await axios.post(
         "http://localhost:8081/sentimentAnalysis",
-        { textToAnalyze: text },
+        { textToAnalyze },
         {
           headers: {
             "Content-Type": "application/json",
@@ -46,6 +37,21 @@ const SentimentAnalysis = () => {
       console.error("Error:", error);
       setAlertMessage("An error occurred while analyzing the sentiment.");
       setOpenAlert(true);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!text.trim()) {
+      setAlertMessage("Text cannot be empty.");
+      setOpenAlert(true);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await analyzeSentiment(text);
     } finally {
       setLoading(false);
     }
